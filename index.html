@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script>
+			fetchData();  
+			var timer = setInterval(fetchData, 50000);  
+			
+			function fetchData()
+			{
+				var data = "";
+				$.get("data.php", function(data, status){
+					if(status == "success")
+					{
+						try{
+							const obj = JSON.parse(data);
+							data = "<tr><td>"+status+"</td><td>"+obj.files+"</td><td>"+obj.rows+"</td></tr>";
+						}catch(err) {
+							data = "<tr><td colspan='3'>Error: "+err.message+" -- "+data+"</td></tr>";
+						}
+					}else
+					{
+						data = "<tr><td colspan='3'>Error: "+status+"</td></tr>";
+					}
+					$("tbody").prepend(data);
+				}).fail(function() {
+					$("tbody").prepend("<tr><td colspan='3'>Fail Error </td></tr>");
+				});
+				
+			}
+			
+			
+		</script>
+	</head>
+	<body>
+		<div class="w3-container">
+			<h2>Data Status</h2>
+			<table  class="w3-table-all w3-centered">
+				<thead>
+					<tr>
+						<th>Status</th>
+						<th>File Name</th>
+						<th>Rows</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Jill</td>
+						<td>Smith</td>
+						<td>50</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
